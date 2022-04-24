@@ -7,7 +7,7 @@ plugins {
 
 }
 apply(plugin = "org.openapi.generator")
-group = "com.singtel.service"
+group = "com.video.service"
 version = "1.0-SNAPSHOT"
 configurations {
     all {
@@ -49,15 +49,14 @@ dependencies {
     runtimeOnly("com.h2database:h2")
     implementation("commons-io:commons-io:2.11.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("io.projectreactor:reactor-test")
     testImplementation("org.junit.jupiter:junit-jupiter")
     implementation("io.springfox:springfox-boot-starter:3.0.0"){
         exclude("org.springframework.plugin:spring-plugin-core")
     }
    implementation("io.springfox:springfox-swagger-ui:3.0.0")
-//    implementation("io.springfox:springfox-spring-webflux:3.0.0"){
-//        exclude("org.springframework.plugin:spring-plugin-core")
-//    }
+    testImplementation("org.dbunit:dbunit:2.5.4")
+    testImplementation("nl.jqno.equalsverifier:equalsverifier:3.4.1")
+    testImplementation("com.github.springtestdbunit:spring-test-dbunit:1.3.0")
 
 
 }

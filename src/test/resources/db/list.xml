@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <FILES ID="ca7619bf-54f1-4383-9b66-63663fd2fd4e" NAME="sample-avi.avi"
+                 CREATED_AT="2022-04-30 13:41:06.294795" TYPE="avi"
+                 DURATION="30" SIZE="2000" />
+    <FILES ID="da7619bf-54f1-4383-9b66-63663fd2fd4e" NAME="sample-mp4.mp4"
+           CREATED_AT="2022-04-20 13:41:06.294795" TYPE="mp4"
+           DURATION="5" SIZE="2000" />
+</dataset>

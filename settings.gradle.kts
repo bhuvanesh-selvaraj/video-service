@@ -1,2 +1,2 @@
-rootProject.name = "reactive-spring-boot"
+rootProject.name = "video-service"
 

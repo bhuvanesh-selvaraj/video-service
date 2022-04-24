@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
@@ -34,7 +35,8 @@ public class VideoController {
         @ApiResponse(code = 415, message = "Unsupported Media Type"),
         @ApiResponse(code = 400, message = "Bad Request")
       })
-  public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") String filePath) {
+  public ResponseEntity<ResponseMessage> uploadFile(
+      @NotBlank @RequestParam("file") String filePath) {
     String message = "";
     try {
       storageService.store(filePath);
@@ -84,8 +86,8 @@ public class VideoController {
   @ApiOperation("Download Files by ID")
   @ApiResponse(code = 404, message = "File not found")
   public ResponseEntity downloadFile(@PathVariable String id) {
-    FileDB fileDB = storageService.getFile(id);
     try {
+      FileDB fileDB = storageService.getFile(id);
       return ResponseEntity.ok()
           .header(
               HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileDB.getName() + "\"")
