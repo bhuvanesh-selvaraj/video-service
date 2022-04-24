@@ -20,6 +20,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
@@ -90,7 +91,9 @@ public class VideoControllerTest {
   public void testUpload() throws Exception {
     FileDB fileDB = new FileDB();
     when(storageService.store(anyString())).thenReturn(fileDB);
-    mock.perform(post("/v1/files").param("file", "filepath")).andExpect(status().isCreated());
+    mock.perform(post("/v1/files").contentType(MediaType.APPLICATION_JSON)
+            .content("{\"file\":\"/Users/bhuvanesh/Downloads/sample-wmv.wmv\"}")
+            .accept(MediaType.APPLICATION_JSON)).andExpect(status().isCreated());
   }
 
   @Test
@@ -103,19 +106,25 @@ public class VideoControllerTest {
   @Test
   public void testUpload_filepathEmpty() throws Exception {
     when(storageService.store(anyString())).thenThrow(UnsupportedOperationException.class);
-    mock.perform(post("/v1/files").param("file", "")).andExpect(status().isUnsupportedMediaType());
+    mock.perform(post("/v1/files").contentType(MediaType.APPLICATION_JSON)
+            .content("{\"file\":\"/Users/bhuvanesh/Downloads/sample-wmv.jpg\"}")
+            .accept(MediaType.APPLICATION_JSON)).andExpect(status().isUnsupportedMediaType());
   }
 
   @Test
   public void testUpload_fileDuplicate() throws Exception {
     when(storageService.store(anyString())).thenThrow(DataIntegrityViolationException.class);
-    mock.perform(post("/v1/files").param("file", "")).andExpect(status().isConflict());
+    mock.perform(post("/v1/files").contentType(MediaType.APPLICATION_JSON)
+            .content("{\"file\":\"/Users/bhuvanesh/Downloads/sample-wmv.wmv\"}")
+            .accept(MediaType.APPLICATION_JSON)).andExpect(status().isConflict());
   }
 
   @Test
   public void testUpload_fileBadREq() throws Exception {
     when(storageService.store(anyString())).thenThrow(IOException.class);
-    mock.perform(post("/v1/files/{file}", "")).andExpect(status().isBadRequest());
+    mock.perform(post("/v1/files").contentType(MediaType.APPLICATION_JSON)
+            .content("{\"file\":\"\"}")
+            .accept(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
   }
 
   @Test

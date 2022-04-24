@@ -1,5 +1,6 @@
 package com.video.controller;
 
+import com.video.model.PayLoad;
 import com.video.model.ResponseFile;
 import com.video.model.ResponseMessage;
 import com.video.repo.FileDB;
@@ -10,6 +11,7 @@ import io.swagger.annotations.ApiResponses;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import javax.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +38,11 @@ public class VideoController {
         @ApiResponse(code = 400, message = "Bad Request")
       })
   public ResponseEntity<ResponseMessage> uploadFile(
-      @NotBlank @RequestParam("file") String filePath) {
+      @NotBlank @RequestBody PayLoad payLoad) {
     String message = "";
+    String filePath = payLoad.getFile();
     try {
+
       storageService.store(filePath);
       message = "Uploaded the file successfully: " + Paths.get(filePath);
       return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseMessage(message));
