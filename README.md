@@ -20,8 +20,8 @@ Then follow below sample commands.
   List: 
   get
   
-  Search (Works only for entered Values. If dont want to search leave as blank. 
-  FileName contains or Size <= or Type contains or DurationOfVideoFileInSeconds <=): 
+  Search: 
   get search --params "{name: 'a'}"
   
-  
+  # Note:
+  Search Works only for entered Values. If dont want to search ignore that param.  FileName contains or Size <= or Type contains or DurationOfVideoFileInSeconds <=
