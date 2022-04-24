@@ -1,0 +1,7 @@
+spring:
+  jpa:
+    show-sql: false
+
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
