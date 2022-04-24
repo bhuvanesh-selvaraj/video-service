@@ -18,7 +18,7 @@ configurations {
                 }
             }
         }
-        exclude("org.springframework.boot:spring-boot-starter-logging")
+        //exclude("org.springframework.boot:spring-boot-starter-logging")
         exclude("ch.qos.logback")
     }
 }
@@ -51,8 +51,13 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
     testImplementation("org.junit.jupiter:junit-jupiter")
-    //implementation("io.springfox:springfox-swagger2:2.7.0")
-    //implementation("io.springfox:springfox-swagger-ui:2.7.0")
+    implementation("io.springfox:springfox-boot-starter:3.0.0"){
+        exclude("org.springframework.plugin:spring-plugin-core")
+    }
+   implementation("io.springfox:springfox-swagger-ui:3.0.0")
+//    implementation("io.springfox:springfox-spring-webflux:3.0.0"){
+//        exclude("org.springframework.plugin:spring-plugin-core")
+//    }
 
 
 }

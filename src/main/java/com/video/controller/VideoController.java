@@ -4,6 +4,9 @@ import com.video.model.ResponseFile;
 import com.video.model.ResponseMessage;
 import com.video.repo.FileDB;
 import com.video.service.FileStorageService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
@@ -13,17 +16,24 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-@Controller
+@RestController
 @RequestMapping("/v1")
 public class VideoController {
   @Autowired private FileStorageService storageService;
 
   /** Not video file extension - throw error upload - File not found download - file not found */
   @PostMapping("/files")
+  @ApiOperation(value = "Upload Video File")
+  @ApiResponses(
+      value = {
+        @ApiResponse(code = 200, message = "Uploaded the file successfully"),
+        @ApiResponse(code = 409, message = "File Already Exist"),
+        @ApiResponse(code = 415, message = "Unsupported Media Type"),
+        @ApiResponse(code = 400, message = "Bad Request")
+      })
   public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") String filePath) {
     String message = "";
     try {
@@ -45,6 +55,7 @@ public class VideoController {
   }
 
   @GetMapping("/files")
+  @ApiOperation("List of Files")
   public ResponseEntity<List<ResponseFile>> getListFiles() {
     List<ResponseFile> files =
         storageService
@@ -70,6 +81,8 @@ public class VideoController {
   }
 
   @GetMapping("/files/{id}")
+  @ApiOperation("Download Files by ID")
+  @ApiResponse(code = 404, message = "File not found")
   public ResponseEntity downloadFile(@PathVariable String id) {
     FileDB fileDB = storageService.getFile(id);
     try {
@@ -83,6 +96,8 @@ public class VideoController {
   }
 
   @DeleteMapping("/files/{id}")
+  @ApiOperation("Delete Files by ID")
+  @ApiResponse(code = 404, message = "File not found")
   public ResponseEntity<ResponseMessage> deleteFile(@PathVariable String id) {
     String message = "";
     try {
@@ -97,7 +112,8 @@ public class VideoController {
   }
 
   @GetMapping("/files/search")
-  public ResponseEntity<List<ResponseFile>> getLaptopsByNameAndBrand(
+  @ApiOperation("Search Files by Name,Duration,Size")
+  public ResponseEntity<List<ResponseFile>> searchFilesByNameSizeDuration(
       @RequestParam(required = false, defaultValue = "...") String name,
       @RequestParam(required = false, defaultValue = "0") long size,
       @RequestParam(required = false, defaultValue = "0") double duration,
